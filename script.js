@@ -1,62 +1,77 @@
 // Assignment Code
-var generateBtn = document.querySelector("#generate");
-var password = document.getElementById("password");
-var lowercase = "asdfghjklmnbvcxzqwertyuiop";
-var uppercase = "QWERTYUIOPASDFGHJKLZXCVBNM";
-var allChoice = [];
-var specialCharcters = "!" "@" "#" "$" "%" "^" "&" "*" ":" ";";
-var passwordLength = document.querySelector("passwordLength");
-var random = randomString(10);
-
-
-// Write password to the #password input
-function generatePassword() {
-// Gather user input on password requirements
+  // Gather user input on password requirements
     // input for # of charcters
     // input for special charcters
     // input for lowercase
     // input for uppercase
     // input for numbers
 
-
-// Validate user input
+ // Validate user input
     // number of characters between 8 and 128
     // What they asnwered true to include
 
-// Decide how to choose what characters to include
-// Randomly grab values from each included category
-// Assemble password string to be returned
+    // Decide how to choose what characters to include
+    // Randomly grab values from each included category
+    // Assemble password string to be returned
+function generatePassword(passwordLength) {
+    var numberChars = "0123456789";
+    var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var lowerChars = "abcdefghijklmnopqrstuvwxyz";
+    var specialChars = "!@$%^&*()";
+    var allChars = numberChars + upperChars + lowerChars + specialChars;
+    var randPasswordArray = Array(passwordLength);
+    randPasswordArray[0] = numberChars;
+    randPasswordArray[1] = upperChars;
+    randPasswordArray[2] = lowerChars;
+    randPasswordArray[3] = specialChars;
+    randPasswordArray = randPasswordArray.fill(allChars, 4);
+    console.log(randPasswordArray)
+    return shuffleArray(randPasswordArray.map(function(x) { return x[Math.floor(Math.random() * x.length)] })).join('');
+}
 
-    var passwordLength = parseInt(prompt("How long do you want your password to be? Password must be between 8-128 characters."));
-    /*console.log(typeof (passwordLength));*/
-    var lowercaseChoice = confirm("Do you want to include lowercase?");
-    if(lowercaseChoice){
-    allChoice.push (lowercase)
-        
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
     }
-    
-    var numbers = parseInt(prompt(""))
-    if(lowercaseChoice){
-        allChoice.push (lowercase)
-            
-        }
-
-    if(lowercaseChoice){
-            allChoice.push (lowercase)
-                
-            }
-    return allChoice
-
+    return array;
 }
+document.getElementById("generate").addEventListener("click", myFunction);
+
+function myFunction() {
+    var passwordLength = prompt("How many characters would you like to include? (Must be between 8-128 chararacters).");
+    console.log(typeof passwordLength)
+
+    if (parseInt(passwordLength) >= 8 && (parseInt(passwordLength) <= 128)) {
+        console.log("working")
+    } else {
+        alert("Please pick a number between 8 and 128.");
+        myFunction();
+    }
+
+    if (confirm("Include Upper Case letters?") == true) {
+        console.log("working 2")
+    } else {
+        console.log("working2-no")
+
+    }
+
+    if (confirm("Include Lower Case letters?") == true) {
+        console.log("working 2")
+    } else {
+        console.log("working2-no")
+
+    }
+
+    if (confirm("Include Special Characters?") == true) {
+        console.log("working 2")
+    } else {
+        console.log("working2-no")
+
+    }
 
 
-
-function writePassword() {
-    var passwordText = generatePassword();
-
-    password.value = passwordText;
-
+    document.getElementById("password").innerHTML = (generatePassword(parseInt(passwordLength)));
 }
-
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
